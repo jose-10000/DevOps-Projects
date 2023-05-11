@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql.config
+  namespace: milindchavan-24-dev
+data:
+  db_url: dbc:mysql://mysql/petclinic 

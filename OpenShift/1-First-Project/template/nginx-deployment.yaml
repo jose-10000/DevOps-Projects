@@ -1,0 +1,78 @@
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
+metadata:
+  name: nginx-example
+  labels:
+    template: nginx-example
+spec:
+  strategy:
+    type: Rolling
+    rollingParams:
+      updatePeriodSeconds: 1
+      intervalSeconds: 1
+      timeoutSeconds: 600
+      maxUnavailable: 25%
+      maxSurge: 25%
+  replicas: 1
+  selector:
+    name: nginx-example
+  template:
+    metadata:
+      name: nginx-example
+      labels:
+        name: nginx-example
+    spec:
+      containers:
+        - resources:
+            limits:
+              memory: 512Mi
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 3
+            timeoutSeconds: 3
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          terminationMessagePath: /dev/termination-log
+          name: nginx-example
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 3
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          volumeMounts:
+          - name: nginx-config-vol
+            mountPath: /etc/nginx/nginx.conf
+            subPath: nginx.conf
+          - name: nginx-html-vol
+            mountPath: /usr/share/nginx/html/index.html
+            subPath: index.html
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          imagePullPolicy: IfNotPresent
+          terminationMessagePolicy: File
+          image: >-
+            image-registry.openshift-image-registry.svc:5000/milindchavan-24-dev/nginx-example@sha256:30cd5d5efa1f0bfbdab5c0efd9d934fbb943f6f1a4d581695ee407e72a5312e2
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+      volumes:
+        - name: nginx-config-vol
+          configMap:
+           name: nginx-conf
+           key: nginx.conf
+        - name: nginx-html-vol
+          configMap:
+           name: nginx-conf
+           key: index.html
