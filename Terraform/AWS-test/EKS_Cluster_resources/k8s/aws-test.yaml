@@ -1,0 +1,27 @@
+# This file is used to create a pod with aws-cli image and service account with IAM role attached to it.
+# This IAM role is used to test the conectivity to S3 bucket.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: aws-test
+  namespace: default
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::684866157439:role/test-oidc # Replace with your own IAM Role ARN, which is used to test the connectivity to S3 bucket
+  # You can find the IAM Role ARN in the Terraform output of the test_policy_arn.
+  # If you can't see it, go to AWS Console -> IAM -> Roles -> test-oidc -and- copy the Role ARN and paste it here.
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: aws-cli
+  namespace: default
+spec:
+  serviceAccountName: aws-test
+  containers:
+  - name: aws-cli
+    image: amazon/aws-cli
+    command: [ "/bin/bash", "-c", "--" ]
+    args: [ "while true; do sleep 30; done;" ]
+  tolerations:
+  - operator: Exists
+    effect: NoSchedule

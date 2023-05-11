@@ -1,0 +1,9 @@
+ 2098  terraform init
+ 2099  terraform plan
+ 2099  terraform apply
+
+ 2091  kubectl get deployment -n ns-by-tf-dev
+ 2092  kubectl get pods -n ns-by-tf-dev
+
+ 2100  terraform destroy
+

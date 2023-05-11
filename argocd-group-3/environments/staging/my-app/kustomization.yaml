@@ -1,0 +1,10 @@
+---
+namespace: staging
+replicas:
+  - name: dev-grupo3-deployment
+    count: 2
+images:
+  - name: jose10000/dev-grupo3
+    newTag: v1.0
+resources:
+  - ../../../my-app-base

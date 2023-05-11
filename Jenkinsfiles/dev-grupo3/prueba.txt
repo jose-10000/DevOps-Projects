@@ -1,0 +1,21 @@
+
+added 796 packages, and audited 797 packages in 8s
+
+99 packages are looking for funding
+  run `npm fund` for details
+
+# npm audit report
+
+webpack  5.0.0 - 5.75.0
+Severity: high
+Cross-realm object access in Webpack 5 - https://github.com/advisories/GHSA-hc6q-2mpp-qw7j
+fix available via `npm audit fix`
+
+  @nestjs/cli  7.5.1-next.1 || 7.5.2-next.2 - 9.2.0
+  Depends on vulnerable versions of webpack
+  
+
+2 high severity vulnerabilities
+
+To address all issues, run:
+  npm audit fix
