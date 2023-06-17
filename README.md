@@ -12,5 +12,7 @@ Here are my personal projects
    
      - [A simple web project installing nginx](./Ansible/1) 
 
-   [ArgoCD]
+   [Argo-CD]
+
+     - [Argo](./Argo-CD/)
    
