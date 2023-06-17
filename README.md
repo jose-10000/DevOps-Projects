@@ -9,6 +9,8 @@ Here are my personal projects
    [Jenkins]
      
    [Ansible]
-     [A simple web project installing nginx] (./ansible/1) 
+   
+     - [A simple web project installing nginx](./Ansible/1) 
+
    [ArgoCD]
    
