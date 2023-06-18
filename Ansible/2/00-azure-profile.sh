@@ -1,5 +1,6 @@
 #! /bin/bash
-# Description: Input Azure Environment Variables
+# This script is used to set the environment variables used by the Terraform and Ansible scripts.
+
 
 
 

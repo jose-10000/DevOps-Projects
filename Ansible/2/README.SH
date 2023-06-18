@@ -1,10 +1,12 @@
 #!/bin/bash
 
-
-# The following variables are used to generate the README.md file.
-# They are not intended to be modified by the user.
-# In order to easylly set de environment variables, you can use the following command:
-
+# This project is for deploying a virtual machine in Azure using Terraform and Ansible, and help you to manage the credentials for Azure and Terraform.
+# First, you need to install Azure CLI, Terraform and Ansible.
+# Then run the script azure-profile.sh to set the environment variables for Azure and Terraform.
+# Then run Terraform to deploy the virtual machine.
+# Then run Ansible to install Apache in the virtual machine.
+# Then you can connect to the virtual machine using SSH.
+# Finally, you can destroy the virtual machine using Terraform.
 
 # Requeriments
 
