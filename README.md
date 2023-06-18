@@ -10,7 +10,8 @@ Here are my personal projects
      
    [Ansible]
    
-     - [A simple web project installing nginx](./Ansible/1) 
+     - [A simple web project installing nginx on AWS_EC2](./Ansible/1) 
+     - [Using Terraform and Ansible on Azure](./Ansible/2/)
 
    [Argo-CD]
 
