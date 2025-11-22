@@ -49,6 +49,10 @@ else
     echo "4. Or use: ./ssl-helper.sh get-cert $DOMAIN your-email@example.com"
 fi
 
+# Keep the container running by tailing logs
+echo "Nginx started. Tailing logs..."
+tail -f /var/log/nginx/access.log /var/log/nginx/error.log
+
 echo "SSL initialization complete. Container ready."
 
 # Keep container running

@@ -4,13 +4,9 @@ FROM nginx:alpine
 # Install certbot and security tools
 RUN apk add --no-cache certbot certbot-nginx openssl curl
 
-# Create nginx user and directories
-RUN addgroup -g 1001 -S nginx && \
-    adduser -S -D -H -u 1001 -h /var/cache/nginx -s /sbin/nologin -G nginx -g nginx nginx
-
-# Create directories for SSL certificates
+# Create directories for SSL certificates and ensure nginx user owns them
 RUN mkdir -p /etc/nginx/ssl /var/www/certbot /var/cache/nginx /var/log/nginx && \
-    chown -R nginx:nginx /etc/nginx/ssl /var/www/certbot /var/cache/nginx /var/log/nginx
+    chown -R nginx:nginx /etc/nginx/ssl /var/www/certbot /var/cache/nginx /var/log/nginx /etc/nginx/conf.d
 
 # Generate self-signed SSL certificate as fallback
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
@@ -29,7 +25,7 @@ COPY --chown=nginx:nginx nginx.conf /etc/nginx/nginx.conf
 COPY --chown=nginx:nginx init-ssl.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/init-ssl.sh
 
-# Switch to non-root user
+# Switch to non-root user (nginx user exists in alpine image)
 USER nginx
 
 # Expose ports
