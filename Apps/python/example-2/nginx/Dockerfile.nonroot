@@ -1,0 +1,32 @@
+FROM nginx:1.27.2-alpine
+
+# Install curl, openssl, and libcap for health checks, SSL certificates, and capabilities
+RUN apk add --no-cache curl openssl libcap
+
+# Crea utente non-root per nginx
+RUN adduser -S droppoint -u 1001 -G nginx
+
+# Crea directory e imposta permessi
+RUN mkdir -p /var/www/html && \
+    chown -R droppoint:nginx /var/www/html && \
+    chown -R droppoint:nginx /var/cache/nginx && \
+    chown -R droppoint:nginx /var/log/nginx && \
+    chown -R droppoint:nginx /etc/nginx/conf.d && \
+    touch /var/run/nginx.pid && \
+    chown -R droppoint:nginx /var/run/nginx.pid
+
+
+RUN rm -rf /var/www/html/*
+COPY --chown=droppoint:nginx html/ /var/www/html/
+COPY --chown=droppoint:nginx config/default-nonroot.conf /etc/nginx/conf.d/default.conf
+# Copia i certificati SSL
+COPY --chown=droppoint:nginx ssl/ /etc/nginx/ssl/
+
+
+USER droppoint
+
+EXPOSE 8080 8443
+
+HEALTHCHECK CMD curl -k --noproxy "localhost" --fail https://localhost:8443 || exit 1
+CMD ["nginx", "-g", "daemon off;"]
+

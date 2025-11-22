@@ -1,0 +1,39 @@
+# docker-compose.yml
+
+services:
+  db:
+    image: postgres:13
+    container_name: postgres_db
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    volumes:
+      - db_data:/var/lib/postgresql/data # Database data persistence
+    ports:
+      - "5432:5432" # Map DB port to host (optional, for direct access)
+    healthcheck: # Healthcheck to ensure DB is ready
+      test: ["CMD-SHELL", "pg_isready -U myuser -d mydatabase"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: . # Build image from current directory (where Dockerfile is located)
+    container_name: python_app
+    environment:
+      DB_HOST: db # The service name 'db' in docker-compose is the hostname
+      DB_NAME: mydatabase
+      DB_USER: myuser
+      DB_PASSWORD: mypassword
+    depends_on:
+      db:
+        condition: service_healthy # App starts only when DB is 'healthy'
+    logging:
+      driver: "json-file" # Logging driver (default, but explicit)
+      options:
+        max-size: "10m" # Max size of log file
+        max-file: "3"   # Max number of log files
+
+volumes:
+  db_data: # Volume definition for DB data persistence
